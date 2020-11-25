@@ -1,0 +1,88 @@
+{
+  "src/lib/components/DashFeatureViewer.react.js": {
+    "description": "ExampleComponent is an example component.\nIt takes a property, `label`, and\ndisplays it.\nIt renders an input with the property `value`\nwhich is editable by the user.",
+    "displayName": "DashFeatureViewer",
+    "methods": [
+      {
+        "name": "clearViewer",
+        "docblock": null,
+        "modifiers": [
+          "static"
+        ],
+        "params": [
+          {
+            "name": "parent",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "createViewer",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      }
+    ],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks."
+      },
+      "options": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "Options for Feature Viewer.",
+        "defaultValue": {
+          "value": "{\n    showAxis: true,\n    showSequence: true,\n    brushActive: true, //zoom\n    toolbar:true, //current zoom & mouse position\n    bubbleHelp:true, \n    zoomMax:50 \n}",
+          "computed": false
+        }
+      },
+      "sequence": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The Sequence or integer length value."
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      },
+      "features": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "The Features to View."
+      },
+      "viewerStyle": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "The Style of Viewer.",
+        "defaultValue": {
+          "value": "{width: '500px'}",
+          "computed": false
+        }
+      },
+      "featureSelected": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "The Style of Viewer."
+      }
+    }
+  }
+}
