@@ -17,9 +17,9 @@ Keyword arguments:
     showAxis: true,
     showSequence: true,
     brushActive: true, //zoom
-    toolbar:true, //current zoom & mouse position
-    bubbleHelp:true, 
-    zoomMax:50 
+    toolbar: true, //current zoom & mouse position
+    bubbleHelp: true, 
+    zoomMax: 50 
 }): Options for Feature Viewer.
 - sequence (string; optional): The Sequence or integer length value.
 - features (list; optional): The Features to View.

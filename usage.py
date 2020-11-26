@@ -21,13 +21,14 @@ features = [
     'type': "rect",
     }
 ]
-
+longseq = "MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"
 app.layout = html.Div([
     dcc.Dropdown(
                     id='sequence',
                     options = [
-                        {'label':'Seq1','value':"MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"},
-                        {'label':'Seq2','value':'DASDASDASDAS'},
+                        {'label': 'Seq1','value':"MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"},
+                        {'label': 'Seq2','value':'DASDASDASDAS'},
+                        {'label': 'Seq3', 'value': longseq}
                     ],
                     value='DASDASDASDAS',
                 ),
@@ -45,6 +46,7 @@ app.layout = html.Div([
         sequence="",
         features=[],
         viewerStyle={'width': '1365px'},
+        options={}
     ),
     html.Div(id='output'),
 ])

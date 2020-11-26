@@ -24,7 +24,7 @@ export default class DashFeatureViewer extends Component {
 
     render() {
         const { id, setProps, viewerStyle } = this.props;
-        const style = {... viewerStyle }
+        const style = { ... viewerStyle }
         return (
             <div id={id} style={style}
                  ref={(c) => { this.container = c; }}
@@ -43,16 +43,19 @@ export default class DashFeatureViewer extends Component {
 
     createViewer() {
         const { id, options, sequence, features, setProps, featureSelected } = this.props;
-        console.log(this.container)
+        // console.log(this.container)
         this.container = DashFeatureViewer.clearViewer(this.container)
-        console.log(this.container)
-        this.viewer = new FeatureViewer(sequence, `#${id}`, options);
+        // console.log(this.container)
+        const fullOptions = { ... defaultOptions, ... options }
+        console.log(fullOptions)
+        this.viewer = new FeatureViewer(sequence, `#${id}`, fullOptions);
         // this.viewer = viewer
         if (features !== null) {
             features.forEach(feature => {
                 this.viewer.addFeature(feature)
             })
         }
+        console.log(this.viewer.extents)
         this.viewer.onFeatureSelected(function (d) {
             console.log(d.detail);
             setProps({ featureSelected: d.detail });
@@ -64,9 +67,9 @@ const defaultOptions = {
     showAxis: true,
     showSequence: true,
     brushActive: true, //zoom
-    toolbar:true, //current zoom & mouse position
-    bubbleHelp:true, 
-    zoomMax:50 
+    toolbar: true, //current zoom & mouse position
+    bubbleHelp: true, 
+    zoomMax: 50 
 };
 
 DashFeatureViewer.defaultProps = {
