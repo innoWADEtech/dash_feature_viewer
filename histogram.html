@@ -6,11 +6,11 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.css">
     <link rel="stylesheet" href="index.css">
-
+    <!-- <script src="../build/viewer.bundle.js"></script> -->
+    <script src="../dist/feature-viewer.bundle.js"></script>
     <!-- <script src="jquery.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../src/feature-viewer.js"></script> -->
-    <script src="../dist/feature-viewer.bundle.js"></script>
 
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
 </head>
@@ -161,22 +161,88 @@
             type: "rect",
             filter: "type2"
         });
+        console.log(ft2.extents)
         ft2.onFeatureSelected(function (d) {
             console.log(d.detail);
+        //    console.log(ft2.extents)
         });
         ft2.onZoom(function (d) {
-            console.log(d);
+            console.log(d.detail);
         });
         console.log(document.getElementsByClassName('x axis Xaxis'));
-        ft2.onClick = function (listener) {
+        ft2.onClack = function (listener) {
             svgElement = document.getElementsByClassName("seqgroup")[0];
             // console.log(svgElement);
             // svgElement = document.getElementsByTagName("svg")[0];
             svgElement.addEventListener("click", listener);
         }
-        ft2.onClick(function (d) {
+        ft2.onClack(function (d) {
             console.log(d);
         });
+        // const divs = document.querySelectorAll('.test8'); 
+        const divs = document.querySelectorAll('.pro axis');
+        // divs.forEach(el => el.addEventListener('click', event => {
+        divs.forEach(el => el.addEventListener('click', event => {
+        // console.log(event.target.classList[1]);
+            var selectedText = ''; 
+    
+            // window.getSelection 
+            if (window.getSelection) { 
+                selectedText = window.getSelection(); 
+            } 
+            // document.getSelection 
+            else if (document.getSelection) { 
+                selectedText = document.getSelection(); 
+            } 
+            // document.selection 
+            else if (document.selection) { 
+                selectedText =  
+                document.selection.createRange().text
+            }
+        console.log(selectedText);
+        }));
+        let key = '';
+        cntrl = (e) => {console.log(e); if (e.ctrlKey === true) {
+            console.log('ctrlKey'); 
+            e.stopPropagation();
+            if (document.getElementsByClassName('selectedRect')[0]) {
+                console.log('selected');
+                selector = document.getElementsByClassName('selectedRect')[0];
+                console.log(selector);
+            } else {
+                console.log('new');
+                let selector = document.createElement('div');
+                let att = document.createAttribute("class");
+                att.value = 'selectedRect'; 
+                selector.setAttributeNode(att);
+                document.getElementById('div2').appendChild(selector);
+                selector.style.top = 60;
+                selector.style.height = 729;
+                selector.style.position = 'absolute';
+                selector.style.zIndex = -1;
+            }
+            selector.style.backgroundColor = "lightGrey";
+            selector.style.left = e.x;
+
+            }
+        };
+        cntrl2 = (e) => {if (e.ctrlKey == true) {
+            console.log('ctrlKey2');
+            e.stopPropagation();
+            selector = document.getElementsByClassName('selectedRect');
+            width = parseFloat(e.x) - parseFloat(selector[0].style.left);
+            console.log(width);
+            selector[0].style.width = width;
+            }
+        }
+        // document.onkeydown = (e, key) => {key = e.key; console.log(key)}
+        document.addEventListener('mousedown', cntrl, true);
+        document.addEventListener('mousemove', cntrl2, true);
+        // document.getElementsByTagName('svg')[0].onmousedown = (e) => {console.log(e); if (e.ctrlKey === true) {console.log('ctrlKey'); e.stopPropagation()}};
+        // document.getElementsByTagName('svg')[0].onmouseup = (e) => {console.log(e)};
+        // document.onselectstart = function() {
+        //    console.log('Selection started!');
+        //  }; 
     </script>
 
 
