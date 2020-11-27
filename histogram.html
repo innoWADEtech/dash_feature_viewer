@@ -2,12 +2,12 @@
 
 <head>
     <title>neXtProt protein sequence viewer</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.4.0/codemirror.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./assets/index.css">
     <!-- <script src="../build/viewer.bundle.js"></script> -->
-    <script src="../dist/feature-viewer.bundle.js"></script>
+    <script src="./assets/feature-viewer.bundle.js"></script>
     <!-- <script src="jquery.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../src/feature-viewer.js"></script> -->
@@ -166,19 +166,23 @@
             console.log(d.detail);
         //    console.log(ft2.extents)
         });
+        const seqview = {start: 0, end: seq.length, scale: 1};
         ft2.onZoom(function (d) {
             console.log(d.detail);
+            seqview.start = d.detail.start;
+            seqview.end = d.detail.end;
+            seqview.scale = parseFloat(d.detail.zoom);
         });
         console.log(document.getElementsByClassName('x axis Xaxis'));
-        ft2.onClack = function (listener) {
-            svgElement = document.getElementsByClassName("seqgroup")[0];
-            // console.log(svgElement);
-            // svgElement = document.getElementsByTagName("svg")[0];
-            svgElement.addEventListener("click", listener);
-        }
-        ft2.onClack(function (d) {
-            console.log(d);
-        });
+        // ft2.onClack = function (listener) {
+        //     svgElement = document.getElementsByClassName("seqgroup")[0];
+        //     // console.log(svgElement);
+        //     // svgElement = document.getElementsByTagName("svg")[0];
+        //     svgElement.addEventListener("click", listener);
+        // }
+        // ft2.onClack(function (d) {
+        //     console.log(d);
+        // });
         // const divs = document.querySelectorAll('.test8'); 
         const divs = document.querySelectorAll('.pro axis');
         // divs.forEach(el => el.addEventListener('click', event => {
@@ -203,14 +207,25 @@
         }));
         let key = '';
         cntrl = (e) => {console.log(e); if (e.ctrlKey === true) {
-            console.log('ctrlKey'); 
+            console.log('start', e.x);
+            console.log('zoom', seqview.scale);
+            console.log(document.getElementsByTagName('svg')[0].width.baseVal.value);
+            let width = document.getElementsByTagName('svg')[0].width.baseVal.value-100;
+            console.log(width);
+            let mousepos = e.x-100;
+            console.log(mousepos);
+            console.log(seqview.start,seqview.end);
+            ratio = (seqview.end-seqview.start)/width;
+            console.log(ratio);
+            seqpos = parseInt(mousepos * ratio)
+            console.log(seqpos+seqview.start, seq[seqview.start+seqpos]);
             e.stopPropagation();
             if (document.getElementsByClassName('selectedRect')[0]) {
-                console.log('selected');
+                // console.log('selected');
                 selector = document.getElementsByClassName('selectedRect')[0];
-                console.log(selector);
+                // console.log(selector);
             } else {
-                console.log('new');
+                // console.log('new');
                 let selector = document.createElement('div');
                 let att = document.createAttribute("class");
                 att.value = 'selectedRect'; 
@@ -227,17 +242,23 @@
             }
         };
         cntrl2 = (e) => {if (e.ctrlKey == true) {
-            console.log('ctrlKey2');
+            // console.log('ctrlKey2');
             e.stopPropagation();
             selector = document.getElementsByClassName('selectedRect');
             width = parseFloat(e.x) - parseFloat(selector[0].style.left);
-            console.log(width);
+            // console.log(width);
             selector[0].style.width = width;
+            }
+        }
+        cntrl3 = (e) => {if (e.ctrlKey == true) {
+            e.stopPropagation();
+            console.log('end', e.x);
             }
         }
         // document.onkeydown = (e, key) => {key = e.key; console.log(key)}
         document.addEventListener('mousedown', cntrl, true);
         document.addEventListener('mousemove', cntrl2, true);
+        document.addEventListener('mouseup', cntrl3, true);
         // document.getElementsByTagName('svg')[0].onmousedown = (e) => {console.log(e); if (e.ctrlKey === true) {console.log('ctrlKey'); e.stopPropagation()}};
         // document.getElementsByTagName('svg')[0].onmouseup = (e) => {console.log(e)};
         // document.onselectstart = function() {
