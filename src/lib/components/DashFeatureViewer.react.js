@@ -14,6 +14,7 @@ export default class DashFeatureViewer extends Component {
 
     static clearViewer(parent) {
         while (parent.firstChild) {
+
             parent.removeChild(parent.firstChild);
         }
         return parent
@@ -27,11 +28,15 @@ export default class DashFeatureViewer extends Component {
             this.state = { zoom: [0, this.props.sequence.length]}
         }
         this.cntrl = this.cntrl.bind(this);
+        this.createViewer =this.createViewer.bind(this);
     }
 
     render() {
-        const { id, setProps, viewerStyle } = this.props;
+        // this.container = DashFeatureViewer.clearViewer(this.container);
+        // this.createViewer();
+        const { id, setProps, viewerStyle, zoom, sequence } = this.props;
         const style = { ... viewerStyle }
+
         return (
             <div id={id} style={style}
                  ref={(c) => { this.container = c; }}
@@ -40,7 +45,10 @@ export default class DashFeatureViewer extends Component {
     }
 
     componentDidMount() {
-        // this.createViewer();
+        this.createViewer();
+        this.container.addEventListener('mousedown', this.cntrl.bind(null, this.seqview, this.container, this.state.zoom), true);
+        this.container.addEventListener('mousemove', this.cntrl2, true);
+        this.container.addEventListener('mouseup', this.cntrl3, true);
     }
 
     componentDidUpdate(prevProps) {
@@ -49,6 +57,15 @@ export default class DashFeatureViewer extends Component {
             sequence !== prevProps.sequence ||
             features !== prevProps.features)
             {
+                console.log('update')
+                this.container = DashFeatureViewer.clearViewer(this.container)
+        //         this.viewer.clearInstance()
+                this.viewer = null;
+                // document.getElementsByTagName('svg').forEach(node =>
+        //         // {
+        //         //     node.remove()
+        //         // })
+
                 this.createViewer();
             }
         if (zoom !== this.state.zoom) {
@@ -61,11 +78,9 @@ export default class DashFeatureViewer extends Component {
     createViewer() {
         const { id, options, sequence, features, setProps, featureSelected, zoom } = this.props;
         // console.log(this.container)
-        this.container = DashFeatureViewer.clearViewer(this.container)
+
         console.log(this.container)
-        this.container.removeEventListener('mousedown', this.cntrl.bind(null, this.seqview, this.container, this.state.zoom), true);
-        this.container.removeEventListener('mousemove', this.cntrl2, true);
-        this.container.removeEventListener('mouseup', this.cntrl3, true);
+        
         const fullOptions = { ... defaultOptions, ... options }
         // console.log(fullOptions)
         // if (this.viewer) {
@@ -85,7 +100,9 @@ export default class DashFeatureViewer extends Component {
             setProps({ featureSelected: d.detail });
         });
 
-        this.seqview = {start: 0, end: this.props.sequence.length, scale: 1};
+        this.seqview.start = 0;
+        this.seqview.end = this.props.sequence.length;
+        this.seqview.scale = 1;
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
             this.seqview.start = d.detail.start;
@@ -97,9 +114,7 @@ export default class DashFeatureViewer extends Component {
         console.log(this.seqview)
         console.log(this.state.zoom)
         // document.onkeydown = (e, key) => {key = e.key; console.log(key)}
-        this.container.addEventListener('mousedown', this.cntrl.bind(null, this.seqview, this.container, this.state.zoom), true);
-        this.container.addEventListener('mousemove', this.cntrl2, true);
-        this.container.addEventListener('mouseup', this.cntrl3, true);
+        
     }
 
     cntrl(seqview, container, zoom, e) {console.log(e); if (e.ctrlKey === true) {
@@ -107,6 +122,7 @@ export default class DashFeatureViewer extends Component {
         console.log('zoom', zoom);
         console.log(this.props.zoom);
         console.log(this.state.zoom)
+        console.log(this.seqview)
         // console.log(document.getElementsByTagName('svg'))
         // console.log(document.getElementsByTagName('svg')[0].width.baseVal.value);
         // console.log(document.getElementsByTagName('svg')[0].clientWidth);

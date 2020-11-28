@@ -54,14 +54,20 @@ app.layout = html.Div([
 
 @app.callback(Output('input', 'sequence'), [Input('sequence', 'value')])
 def display_output(value):
-    return value
+    if value:
+        return value
+    else:
+        return dash.no_update
 
 @app.callback(Output('input', 'features'), [Input('feature', 'value')])
 def feat(value):
-    feets = [features[v] for v in value]
-    return feets
+    if value:
+        feets = [features[v] for v in value]
+        return feets
+    else:
+        return dash.no_update
 
-@app.callback(Output('output', 'children'), Input('input', 'featureSelected'))
+@app.callback(Output('output', 'children'), Input('input', 'zoom'))
 def sel(select):
     return str(select)
 
