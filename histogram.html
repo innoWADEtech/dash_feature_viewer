@@ -173,7 +173,7 @@
             seqview.end = d.detail.end;
             seqview.scale = parseFloat(d.detail.zoom);
         });
-        console.log(document.getElementsByClassName('x axis Xaxis'));
+        // console.log(document.getElementsByClassName('x axis Xaxis'));
         // ft2.onClack = function (listener) {
         //     svgElement = document.getElementsByClassName("seqgroup")[0];
         //     // console.log(svgElement);
@@ -203,19 +203,27 @@
                 selectedText =  
                 document.selection.createRange().text
             }
-        console.log(selectedText);
+        // console.log(selectedText);
         }));
         let key = '';
         cntrl = (e) => {console.log(e); if (e.ctrlKey === true) {
             console.log('start', e.x);
             console.log('zoom', seqview.scale);
+            console.log(document.getElementsByTagName('svg'))
             console.log(document.getElementsByTagName('svg')[0].width.baseVal.value);
-            let width = document.getElementsByTagName('svg')[0].width.baseVal.value-100;
+            console.log(document.getElementsByTagName('svg')[0].clientWidth);
+            console.log(document.getElementsByTagName('svg')[0].clientHeight);
+            console.log(document.getElementsByClassName('background'))
+            console.log(document.getElementsByClassName('pro axis'))
+            let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
+            console.log(figureWidth)
+            let totalWidth = document.getElementById('div2').clientWidth;
+            let width = totalWidth - figureWidth - 26;
             console.log(width);
-            let mousepos = e.x-100;
+            let mousepos = e.x-width;
             console.log(mousepos);
             console.log(seqview.start,seqview.end);
-            ratio = (seqview.end-seqview.start)/width;
+            ratio = (seqview.end-seqview.start)/figureWidth;
             console.log(ratio);
             seqpos = parseInt(mousepos * ratio)
             console.log(seqpos+seqview.start, seq[seqview.start+seqpos]);
@@ -231,8 +239,10 @@
                 att.value = 'selectedRect'; 
                 selector.setAttributeNode(att);
                 document.getElementById('div2').appendChild(selector);
-                selector.style.top = 60;
-                selector.style.height = 729;
+                totalHeight = document.getElementById('div2').clientHeight;
+                figureHeight = document.getElementsByTagName('svg')[0].clientHeight;
+                selector.style.top = totalHeight-figureHeight+7;
+                selector.style.height = figureHeight-10;
                 selector.style.position = 'absolute';
                 selector.style.zIndex = -1;
             }
