@@ -9,7 +9,7 @@ app = dash.Dash(__name__)
 features = [ 
     {
     'data': [{'x': 1, 'y': 4}, {'x': 6, 'y': 13}, {'x': 20, 'y': 30}],
-    'name': "test feature 1",
+    'name': "test feature 100000000",
     'className': "test1",
     'color': "#0F8292",
     'type': "rect",

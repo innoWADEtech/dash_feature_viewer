@@ -206,7 +206,7 @@
         // console.log(selectedText);
         }));
         let key = '';
-        cntrl = (e) => {console.log(e); if (e.ctrlKey === true) {
+        cntrl = (dude, e) => {console.log(e,dude); if (e.ctrlKey === true) {
             console.log('start', e.x);
             console.log('zoom', seqview.scale);
             console.log(document.getElementsByTagName('svg'))
@@ -266,7 +266,8 @@
             }
         }
         // document.onkeydown = (e, key) => {key = e.key; console.log(key)}
-        document.addEventListener('mousedown', cntrl, true);
+        let dude = "dude";
+        document.addEventListener('mousedown', cntrl.bind(null, dude), true);
         document.addEventListener('mousemove', cntrl2, true);
         document.addEventListener('mouseup', cntrl3, true);
         // document.getElementsByTagName('svg')[0].onmousedown = (e) => {console.log(e); if (e.ctrlKey === true) {console.log('ctrlKey'); e.stopPropagation()}};
@@ -274,6 +275,34 @@
         // document.onselectstart = function() {
         //    console.log('Selection started!');
         //  }; 
+        ft2.clearViewer()
+        ft2(seq,"#div2", {
+            showAxis: true,
+            showSequence: true,
+            brushActive: true,
+            toolbar:true,
+            bubbleHelp:true,
+            zoomMax:10,
+//                offset:{
+//                    start:40,
+//                    end:100
+//                },
+            minLengthAnim: 300
+                    });
+                
+        ft2.addFeature({
+            data: [{x:120,y:154,description:"aaaaa",id:"a1"},{x:22,y:163,description:"bbbbb",id:"b1"},
+                    {x:90,y:108,description:"ccccc",id:"c1"},{x:10,y:25,description:"ddddd",id:"d1"},
+                    {x:193,y:210,description:"eeeee",id:"e1"},{x:78,y:85,description:"fffff",id:"f1"},
+                    {x:96,y:143,description:"ggggg",id:"g1"},{x:14,y:65,description:"hhhhh",id:"h1"},
+                    {x:56,y:167,description:"jjjjj",id:"j1"}],
+            name: "test feature 8",
+            className: "test8",
+            color: "#eda64f",
+            type: "rect",
+            filter: "type2"
+        });
+        
     </script>
 
 

@@ -23,6 +23,54 @@
         "modifiers": [],
         "params": [],
         "returns": null
+      },
+      {
+        "name": "cntrl",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "seqview",
+            "type": null
+          },
+          {
+            "name": "container",
+            "type": null
+          },
+          {
+            "name": "zoom",
+            "type": null
+          },
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "cntrl2",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "cntrl3",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
       }
     ],
     "props": {
@@ -79,6 +127,13 @@
       "featureSelected": {
         "type": {
           "name": "object"
+        },
+        "required": false,
+        "description": "The Style of Viewer."
+      },
+      "zoom": {
+        "type": {
+          "name": "array"
         },
         "required": false,
         "description": "The Style of Viewer."

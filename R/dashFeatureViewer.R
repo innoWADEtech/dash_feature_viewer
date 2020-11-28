@@ -1,8 +1,8 @@
 # AUTO GENERATED FILE - DO NOT EDIT
 
-dashFeatureViewer <- function(id=NULL, options=NULL, sequence=NULL, features=NULL, viewerStyle=NULL, featureSelected=NULL) {
+dashFeatureViewer <- function(id=NULL, options=NULL, sequence=NULL, features=NULL, viewerStyle=NULL, featureSelected=NULL, zoom=NULL) {
     
-    props <- list(id=id, options=options, sequence=sequence, features=features, viewerStyle=viewerStyle, featureSelected=featureSelected)
+    props <- list(id=id, options=options, sequence=sequence, features=features, viewerStyle=viewerStyle, featureSelected=featureSelected, zoom=zoom)
     if (length(props) > 0) {
         props <- props[!vapply(props, is.null, logical(1))]
     }
@@ -10,7 +10,7 @@ dashFeatureViewer <- function(id=NULL, options=NULL, sequence=NULL, features=NUL
         props = props,
         type = 'DashFeatureViewer',
         namespace = 'dash_feature_viewer',
-        propNames = c('id', 'options', 'sequence', 'features', 'viewerStyle', 'featureSelected'),
+        propNames = c('id', 'options', 'sequence', 'features', 'viewerStyle', 'featureSelected', 'zoom'),
         package = 'dashFeatureViewer'
         )
 

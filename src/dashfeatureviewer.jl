@@ -18,9 +18,10 @@ Keyword arguments:
 - `features` (Array; optional): The Features to View.
 - `viewerStyle` (Dict; optional): The Style of Viewer.
 - `featureSelected` (Dict; optional): The Style of Viewer.
+- `zoom` (Array; optional): The Style of Viewer.
 """
 function dashfeatureviewer(; kwargs...)
-        available_props = Symbol[:id, :options, :sequence, :features, :viewerStyle, :featureSelected]
+        available_props = Symbol[:id, :options, :sequence, :features, :viewerStyle, :featureSelected, :zoom]
         wild_props = Symbol[]
         return Component("dashfeatureviewer", "DashFeatureViewer", "dash_feature_viewer", available_props, wild_props; kwargs...)
 end
