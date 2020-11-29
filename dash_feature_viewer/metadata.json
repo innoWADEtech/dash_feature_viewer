@@ -112,7 +112,7 @@
         "required": false,
         "description": "The Style of Viewer.",
         "defaultValue": {
-          "value": "{width: '500px'}",
+          "value": "{}",
           "computed": false
         }
       },

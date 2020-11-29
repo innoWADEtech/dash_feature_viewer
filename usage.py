@@ -45,7 +45,7 @@ app.layout = html.Div([
         id='input',
         sequence="",
         features=[],
-        viewerStyle={'width': '1365px'},
+        viewerStyle={'width': '800px'},
         options={}
     ),
     html.Div(id='output'),

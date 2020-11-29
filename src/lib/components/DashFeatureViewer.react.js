@@ -12,24 +12,22 @@ import FeatureViewer from 'feature-viewer';
  */
 export default class DashFeatureViewer extends Component {
 
+    // Clear container
     static clearViewer(parent) {
         while (parent.firstChild) {
-
             parent.removeChild(parent.firstChild);
         }
         return parent
     }
     constructor(props) {
         super(props); 
-        this.seqview = {start: 0, end: this.props.sequence.length, scale: 1};
+
         this.cntrl = this.cntrl.bind(this);
         this.cntrl3 = this.cntrl3.bind(this);
         this.createViewer = this.createViewer.bind(this);
     }
 
     render() {
-        // this.container = DashFeatureViewer.clearViewer(this.container);
-        // this.createViewer();
         const { id, setProps, viewerStyle, zoom, sequence } = this.props;
         const style = { ... viewerStyle }
 
@@ -49,39 +47,24 @@ export default class DashFeatureViewer extends Component {
 
     componentDidUpdate(prevProps) {
         const {options, sequence, features, zoom } = this.props;
+        // Have to replace everything on update since no update methods in library
         if (options !== prevProps.options ||
             sequence !== prevProps.sequence ||
             features !== prevProps.features)
             {
-                console.log('update')
+                // must clear container or just adds new instances
                 this.container = DashFeatureViewer.clearViewer(this.container)
-        //         this.viewer.clearInstance()
                 this.viewer = null;
-                // document.getElementsByTagName('svg').forEach(node =>
-        //         // {
-        //         //     node.remove()
-        //         // })
-
                 this.createViewer();
             }
-        // if (zoom !== this.state.zoom) {
-        //     this.setState({ zoom: zoom})
-        // }
-        // console.log(this.state)
-        // this.viewer.clearInstance();
         
     }
+
     createViewer() {
         const { id, options, sequence, features, setProps, featureSelected, zoom } = this.props;
-        // console.log(this.container)
-
-        console.log(this.container)
-        
+        // unpack all options
         const fullOptions = { ... defaultOptions, ... options }
-        // console.log(fullOptions)
-        // if (this.viewer) {
-        //     this.viewer.clearViewer()
-        // }
+        // 
         this.viewer = new FeatureViewer(sequence, `#${id}`, fullOptions);
         // this.viewer = viewer
         if (features !== null) {
@@ -89,34 +72,23 @@ export default class DashFeatureViewer extends Component {
                 this.viewer.addFeature(feature)
             })
         }
-        console.log(zoom)
-        console.log(sequence.length)
+        // set zoom to sequence length
         setProps({zoom: [0, sequence.length] });
-        // console.log(this.container.clientHeight)
-        // console.log(document.getElementById(this.props.id))
+
+        // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
             console.log(d.detail);
             setProps({ featureSelected: d.detail });
         });
 
-        this.seqview.start = 0;
-        this.seqview.end = this.props.sequence.length;
-        this.seqview.scale = 1;
-        // this.viewer.onZoom(this.zoomba.bind(null, setProps)
+        // update props with zoom
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
             setProps({ zoom: [d.detail.start, d.detail.end]});
         })
-        // console.log(this.container)
-        // console.log(this.seqview)
-        // console.log(this.state.zoom)
-        // document.onkeydown = (e, key) => {key = e.key; console.log(key)}  
     }
 
-    // zommba(setProps, e) {
-    //     console.log(d.details)
-    // }
-
+    // mouse down with cntrl to start sequence select
     cntrl(container, e) {console.log(e); if (e.ctrlKey === true) {
         console.log(this.props.zoom);
         let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
@@ -139,8 +111,9 @@ export default class DashFeatureViewer extends Component {
             att.value = 'selectedRect'; 
             selector.setAttributeNode(att);
             let totalHeight = container.clientHeight;
-            let figureHeight = document.getElementsByTagName('svg')[0].clientHeight;
-            console.log(document.getElementsByTagName('svg')[0].clientHeight)
+            let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
+            console.log(document.getElementsByTagName('svg'))
+            console.log(document.getElementsByTagName('svg')[1].clientHeight)
             // selector.style.top = `${totalHeight-figureHeight+7}px`;
             selector.style.top = '60px';
             selector.style.height = `${figureHeight-10}px`;
@@ -153,6 +126,7 @@ export default class DashFeatureViewer extends Component {
         }
     };
 
+    // mousemove with cntrl to select
     cntrl2(e) {if (e.ctrlKey == true) {
         e.stopPropagation();
         if (document.getElementsByClassName('selectedRect')) {
@@ -163,23 +137,22 @@ export default class DashFeatureViewer extends Component {
         }
     }
 
+    // mouseup with cntrl to end select and update props
     cntrl3 (e) {if (e.ctrlKey == true) {
         e.stopPropagation();
         console.log('end', e.x);
         if (document.getElementsByClassName('selectedRect')) {
             let selector = document.getElementsByClassName('selectedRect')[0];
             let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
-            // let totalWidth = container.clientWidth;
             let width = 115;
             let mousepos = e.x-width;
             let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
             console.log(selector.style.left.slice(0,-2), selector.style.width.slice(0,-2))
             let start = parseFloat(selector.style.left.slice(0,-2));
             let end = parseFloat(selector.style.width.slice(0,-2));
-            let startAA = parseInt((start - width) * ratio);
-            let endAA = parseInt((start + end - width) * ratio);
+            let startAA = parseInt((start - width) * ratio) + this.props.zoom[0];
+            let endAA = parseInt((start + end - width) * ratio) + this.props.zoom[0];
             this.props.setProps({ selectedSeq: [startAA, endAA]});
-            // let seqpos = parseInt(selector.style.left * ratio)
         }  
     } 
     }
@@ -196,7 +169,7 @@ const defaultOptions = {
 
 DashFeatureViewer.defaultProps = {
     options: defaultOptions,
-    viewerStyle: {width: '500px'},
+    viewerStyle: {'width': '800px'},
     zoom: [0,0],
 };
 
@@ -238,12 +211,12 @@ DashFeatureViewer.propTypes = {
     featureSelected: PropTypes.object,
 
     /**
-     * The Style of Viewer.
+     * The Zoom of Viewer.
      */
     zoom: PropTypes.array,
 
     /**
-     * The Style of Viewer.
+     * The selected sequence of Viewer.
      */
     selectedSeq: PropTypes.array,
 };

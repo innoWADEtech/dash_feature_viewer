@@ -23,7 +23,7 @@ Keyword arguments:
 }): Options for Feature Viewer.
 - sequence (string; optional): The Sequence or integer length value.
 - features (list; optional): The Features to View.
-- viewerStyle (dict; default {width: '500px'}): The Style of Viewer.
+- viewerStyle (dict; optional): The Style of Viewer.
 - featureSelected (dict; optional): The Style of Viewer.
 - zoom (list; default [0,0]): The Style of Viewer.
 - selectedSeq (list; optional): The Style of Viewer."""
