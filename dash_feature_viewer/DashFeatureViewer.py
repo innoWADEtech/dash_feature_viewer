@@ -23,17 +23,16 @@ Keyword arguments:
 }): Options for Feature Viewer.
 - sequence (string; optional): The Sequence or integer length value.
 - features (list; optional): The Features to View.
-- viewerStyle (dict; optional): The Style of Viewer.
-- featureSelected (dict; optional): The Style of Viewer.
-- zoom (list; default [0,0]): The Style of Viewer.
-- selectedSeq (list; optional): The Style of Viewer."""
+- viewerStyle (dict; default {'width': '800px'}): The Style of Viewer.
+- zoom (list; default [0,0]): The Zoom of Viewer.
+- selectedSeq (list; optional): The selected sequence of Viewer."""
     @_explicitize_args
-    def __init__(self, id=Component.UNDEFINED, options=Component.UNDEFINED, sequence=Component.UNDEFINED, features=Component.UNDEFINED, viewerStyle=Component.UNDEFINED, featureSelected=Component.UNDEFINED, zoom=Component.UNDEFINED, selectedSeq=Component.UNDEFINED, **kwargs):
-        self._prop_names = ['id', 'options', 'sequence', 'features', 'viewerStyle', 'featureSelected', 'zoom', 'selectedSeq']
+    def __init__(self, id=Component.UNDEFINED, options=Component.UNDEFINED, sequence=Component.UNDEFINED, features=Component.UNDEFINED, viewerStyle=Component.UNDEFINED, zoom=Component.UNDEFINED, selectedSeq=Component.UNDEFINED, **kwargs):
+        self._prop_names = ['id', 'options', 'sequence', 'features', 'viewerStyle', 'zoom', 'selectedSeq']
         self._type = 'DashFeatureViewer'
         self._namespace = 'dash_feature_viewer'
         self._valid_wildcard_attributes =            []
-        self.available_properties = ['id', 'options', 'sequence', 'features', 'viewerStyle', 'featureSelected', 'zoom', 'selectedSeq']
+        self.available_properties = ['id', 'options', 'sequence', 'features', 'viewerStyle', 'zoom', 'selectedSeq']
         self.available_wildcard_properties =            []
 
         _explicit_args = kwargs.pop('_explicit_args')

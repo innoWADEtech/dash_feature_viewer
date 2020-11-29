@@ -11,8 +11,7 @@ ExampleComponent is an example component. It takes a property, `label`, and disp
 
 \usage{
 dashFeatureViewer(id=NULL, options=NULL, sequence=NULL, features=NULL,
-viewerStyle=NULL, featureSelected=NULL, zoom=NULL,
-selectedSeq=NULL)
+viewerStyle=NULL, zoom=NULL, selectedSeq=NULL)
 }
 
 \arguments{
@@ -26,11 +25,9 @@ selectedSeq=NULL)
 
 \item{viewerStyle}{Named list. The Style of Viewer.}
 
-\item{featureSelected}{Named list. The Style of Viewer.}
+\item{zoom}{Unnamed list. The Zoom of Viewer.}
 
-\item{zoom}{Unnamed list. The Style of Viewer.}
-
-\item{selectedSeq}{Unnamed list. The Style of Viewer.}
+\item{selectedSeq}{Unnamed list. The selected sequence of Viewer.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

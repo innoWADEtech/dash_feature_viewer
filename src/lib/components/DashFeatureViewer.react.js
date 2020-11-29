@@ -78,19 +78,18 @@ export default class DashFeatureViewer extends Component {
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
             console.log(d.detail);
-            setProps({ featureSelected: d.detail });
+            setProps({ selectedSeq: [d.detail.start, d.detail.end] });
         });
 
         // update props with zoom
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
-            setProps({ zoom: [d.detail.start, d.detail.end]});
+            setProps({ zoom: [d.detail.start, d.detail.end] });
         })
     }
 
     // mouse down with cntrl to start sequence select
     cntrl(container, e) {console.log(e); if (e.ctrlKey === true) {
-        console.log(this.props.zoom);
         let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
         let totalWidth = container.clientWidth;
         let width = 115;
@@ -204,11 +203,6 @@ DashFeatureViewer.propTypes = {
      * The Style of Viewer.
      */
     viewerStyle: PropTypes.object,
-
-    /**
-     * The Style of Viewer.
-     */
-    featureSelected: PropTypes.object,
 
     /**
      * The Zoom of Viewer.

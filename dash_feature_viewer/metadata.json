@@ -112,23 +112,16 @@
         "required": false,
         "description": "The Style of Viewer.",
         "defaultValue": {
-          "value": "{}",
+          "value": "{'width': '800px'}",
           "computed": false
         }
-      },
-      "featureSelected": {
-        "type": {
-          "name": "object"
-        },
-        "required": false,
-        "description": "The Style of Viewer."
       },
       "zoom": {
         "type": {
           "name": "array"
         },
         "required": false,
-        "description": "The Style of Viewer.",
+        "description": "The Zoom of Viewer.",
         "defaultValue": {
           "value": "[0,0]",
           "computed": false
@@ -139,7 +132,7 @@
           "name": "array"
         },
         "required": false,
-        "description": "The Style of Viewer."
+        "description": "The selected sequence of Viewer."
       }
     }
   }
