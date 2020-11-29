@@ -1,6 +1,6 @@
 import dash_feature_viewer
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
 
@@ -67,9 +67,13 @@ def feat(value):
     else:
         return dash.no_update
 
-@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'))
-def sel(select):
-    return str(select)
+@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('sequence', 'value'))
+def sel(select, seq):
+    if select:
+        seqsel = seq[select[0]:select[1]]
+        return f"{seqsel} {select}"
+    else:
+        return dash.no_update
 
 if __name__ == '__main__':
     app.run_server(debug=True)

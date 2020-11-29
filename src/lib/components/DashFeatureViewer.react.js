@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import './feature-viewer.bundle.js';
-// import './feature-viewer.min.css';
 import FeatureViewer from 'feature-viewer';
 /**
- * ExampleComponent is an example component.
- * It takes a property, `label`, and
- * displays it.
- * It renders an input with the property `value`
- * which is editable by the user.
+ * Feature Viewer for Protein or DNA sequences
+ * From Calipho 
+ * Add Features as object
+ * Selected Feature or Sequence available in callback
+ * 
  */
 export default class DashFeatureViewer extends Component {
 
@@ -78,38 +76,33 @@ export default class DashFeatureViewer extends Component {
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
             console.log(d.detail);
-            setProps({ selectedSeq: [d.detail.start, d.detail.end] });
+            setProps({ selectedSeq: [d.detail.start-1, d.detail.end] });
         });
 
         // update props with zoom
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
-            setProps({ zoom: [d.detail.start, d.detail.end] });
+            setProps({ zoom: [d.detail.start-1, d.detail.end] });
         })
     }
 
     // mouse down with cntrl to start sequence select
-    cntrl(container, e) {console.log(e); if (e.ctrlKey === true) {
-        let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
-        let totalWidth = container.clientWidth;
-        let width = 115;
-        let mousepos = e.x-width;
-        let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
-        let seqpos = parseInt(mousepos * ratio)
-        console.log(seqpos+this.props.zoom[0], this.props.sequence[this.props.zoom[0]+seqpos]);
+    cntrl(container, e) {if (e.ctrlKey === true) {
         e.stopPropagation();
         let selector = '';
+        // use selectedRect from feature
         if (document.getElementsByClassName('selectedRect')[0]) {
             selector = document.getElementsByClassName('selectedRect')[0];
             selector.style.backgroundColor = "lightgrey";
             selector.style.left = `${e.x}px`;
             selector.style.width = '0px';
+        // create new selectedRect
         } else {
             selector = document.createElement('div');
             let att = document.createAttribute("class");
             att.value = 'selectedRect'; 
             selector.setAttributeNode(att);
-            let totalHeight = container.clientHeight;
+            // let totalHeight = container.clientHeight;
             let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
             console.log(document.getElementsByTagName('svg'))
             console.log(document.getElementsByTagName('svg')[1].clientHeight)
@@ -139,18 +132,15 @@ export default class DashFeatureViewer extends Component {
     // mouseup with cntrl to end select and update props
     cntrl3 (e) {if (e.ctrlKey == true) {
         e.stopPropagation();
-        console.log('end', e.x);
         if (document.getElementsByClassName('selectedRect')) {
             let selector = document.getElementsByClassName('selectedRect')[0];
             let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
             let width = 115;
-            let mousepos = e.x-width;
             let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
-            console.log(selector.style.left.slice(0,-2), selector.style.width.slice(0,-2))
             let start = parseFloat(selector.style.left.slice(0,-2));
             let end = parseFloat(selector.style.width.slice(0,-2));
-            let startAA = parseInt((start - width) * ratio) + this.props.zoom[0];
-            let endAA = parseInt((start + end - width) * ratio) + this.props.zoom[0];
+            let startAA = Math.round((start - width) * ratio) + this.props.zoom[0];
+            let endAA = Math.round((start + end - width) * ratio) + this.props.zoom[0];
             this.props.setProps({ selectedSeq: [startAA, endAA]});
         }  
     } 
