@@ -67,7 +67,7 @@ def feat(value):
     else:
         return dash.no_update
 
-@app.callback(Output('output', 'children'), Input('input', 'zoom'))
+@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'))
 def sel(select):
     return str(select)
 

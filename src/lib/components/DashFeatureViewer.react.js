@@ -22,13 +22,9 @@ export default class DashFeatureViewer extends Component {
     constructor(props) {
         super(props); 
         this.seqview = {start: 0, end: this.props.sequence.length, scale: 1};
-        if (this.props.zoom) {
-            this.state = { zoom: this.props.zoom }
-        } else {
-            this.state = { zoom: [0, this.props.sequence.length]}
-        }
         this.cntrl = this.cntrl.bind(this);
-        this.createViewer =this.createViewer.bind(this);
+        this.cntrl3 = this.cntrl3.bind(this);
+        this.createViewer = this.createViewer.bind(this);
     }
 
     render() {
@@ -46,7 +42,7 @@ export default class DashFeatureViewer extends Component {
 
     componentDidMount() {
         this.createViewer();
-        this.container.addEventListener('mousedown', this.cntrl.bind(null, this.seqview, this.container, this.state.zoom), true);
+        this.container.addEventListener('mousedown', this.cntrl.bind(null, this.container), true);
         this.container.addEventListener('mousemove', this.cntrl2, true);
         this.container.addEventListener('mouseup', this.cntrl3, true);
     }
@@ -68,10 +64,10 @@ export default class DashFeatureViewer extends Component {
 
                 this.createViewer();
             }
-        if (zoom !== this.state.zoom) {
-            this.setState({ zoom: zoom})
-        }
-        console.log(this.state)
+        // if (zoom !== this.state.zoom) {
+        //     this.setState({ zoom: zoom})
+        // }
+        // console.log(this.state)
         // this.viewer.clearInstance();
         
     }
@@ -93,6 +89,9 @@ export default class DashFeatureViewer extends Component {
                 this.viewer.addFeature(feature)
             })
         }
+        console.log(zoom)
+        console.log(sequence.length)
+        setProps({zoom: [0, sequence.length] });
         // console.log(this.container.clientHeight)
         // console.log(document.getElementById(this.props.id))
         this.viewer.onFeatureSelected(function (d) {
@@ -103,62 +102,45 @@ export default class DashFeatureViewer extends Component {
         this.seqview.start = 0;
         this.seqview.end = this.props.sequence.length;
         this.seqview.scale = 1;
+        // this.viewer.onZoom(this.zoomba.bind(null, setProps)
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
-            this.seqview.start = d.detail.start;
-            this.seqview.end = d.detail.end;
-            this.seqview.scale = parseFloat(d.detail.zoom);
-            this.props.setProps({ zoom: [d.detail.start,d.detail.end]})
-        });
-        console.log(this.container)
-        console.log(this.seqview)
-        console.log(this.state.zoom)
-        // document.onkeydown = (e, key) => {key = e.key; console.log(key)}
-        
+            setProps({ zoom: [d.detail.start, d.detail.end]});
+        })
+        // console.log(this.container)
+        // console.log(this.seqview)
+        // console.log(this.state.zoom)
+        // document.onkeydown = (e, key) => {key = e.key; console.log(key)}  
     }
 
-    cntrl(seqview, container, zoom, e) {console.log(e); if (e.ctrlKey === true) {
-        console.log('start', e.x);
-        console.log('zoom', zoom);
+    // zommba(setProps, e) {
+    //     console.log(d.details)
+    // }
+
+    cntrl(container, e) {console.log(e); if (e.ctrlKey === true) {
         console.log(this.props.zoom);
-        console.log(this.state.zoom)
-        console.log(this.seqview)
-        // console.log(document.getElementsByTagName('svg'))
-        // console.log(document.getElementsByTagName('svg')[0].width.baseVal.value);
-        // console.log(document.getElementsByTagName('svg')[0].clientWidth);
-        // console.log(document.getElementsByTagName('svg')[0].clientHeight);
-        // console.log(document.getElementsByClassName('background'))
-        console.log(container)
         let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
-        // console.log(figureWidth)
         let totalWidth = container.clientWidth;
-        // let width = totalWidth - figureWidth - 26;
         let width = 115;
-        // console.log(width);
         let mousepos = e.x-width;
-        // console.log(mousepos);
-        console.log(seqview.start,seqview.end);
-        let ratio = (seqview.end-seqview.start)/figureWidth;
-        // console.log(ratio);
+        let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
         let seqpos = parseInt(mousepos * ratio)
-        console.log(seqpos+seqview.start, this.props.sequence[seqview.start+seqpos]);
+        console.log(seqpos+this.props.zoom[0], this.props.sequence[this.props.zoom[0]+seqpos]);
         e.stopPropagation();
         let selector = '';
         if (document.getElementsByClassName('selectedRect')[0]) {
-            // console.log('selected');
             selector = document.getElementsByClassName('selectedRect')[0];
             selector.style.backgroundColor = "lightgrey";
             selector.style.left = `${e.x}px`;
             selector.style.width = '0px';
-            // console.log(selector);
         } else {
-            // console.log('new');
             selector = document.createElement('div');
             let att = document.createAttribute("class");
             att.value = 'selectedRect'; 
             selector.setAttributeNode(att);
             let totalHeight = container.clientHeight;
             let figureHeight = document.getElementsByTagName('svg')[0].clientHeight;
+            console.log(document.getElementsByTagName('svg')[0].clientHeight)
             // selector.style.top = `${totalHeight-figureHeight+7}px`;
             selector.style.top = '60px';
             selector.style.height = `${figureHeight-10}px`;
@@ -168,31 +150,41 @@ export default class DashFeatureViewer extends Component {
             selector.style.left = `${e.x}px`;
             container.appendChild(selector);
         }
-        // selector.style.backgroundColor = "lightgrey";
-        // selector.style.left = e.x;
-        console.log(container)
-
         }
     };
+
     cntrl2(e) {if (e.ctrlKey == true) {
-        // console.log('ctrlKey2');
         e.stopPropagation();
         if (document.getElementsByClassName('selectedRect')) {
             let selector = document.getElementsByClassName('selectedRect');
             let width = parseFloat(e.x) - parseFloat(selector[0].style.left);
-            // console.log(width);
-        // console.log(width);
             selector[0].style.width = `${width}px`;
             }
         }
     }
+
     cntrl3 (e) {if (e.ctrlKey == true) {
         e.stopPropagation();
         console.log('end', e.x);
-        }
+        if (document.getElementsByClassName('selectedRect')) {
+            let selector = document.getElementsByClassName('selectedRect')[0];
+            let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
+            // let totalWidth = container.clientWidth;
+            let width = 115;
+            let mousepos = e.x-width;
+            let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
+            console.log(selector.style.left.slice(0,-2), selector.style.width.slice(0,-2))
+            let start = parseFloat(selector.style.left.slice(0,-2));
+            let end = parseFloat(selector.style.width.slice(0,-2));
+            let startAA = parseInt((start - width) * ratio);
+            let endAA = parseInt((start + end - width) * ratio);
+            this.props.setProps({ selectedSeq: [startAA, endAA]});
+            // let seqpos = parseInt(selector.style.left * ratio)
+        }  
+    } 
     }
-    
 }
+
 const defaultOptions = {
     showAxis: true,
     showSequence: true,
@@ -205,6 +197,7 @@ const defaultOptions = {
 DashFeatureViewer.defaultProps = {
     options: defaultOptions,
     viewerStyle: {width: '500px'},
+    zoom: [0,0],
 };
 
 DashFeatureViewer.propTypes = {
@@ -248,4 +241,9 @@ DashFeatureViewer.propTypes = {
      * The Style of Viewer.
      */
     zoom: PropTypes.array,
+
+    /**
+     * The Style of Viewer.
+     */
+    selectedSeq: PropTypes.array,
 };
