@@ -1,6 +1,6 @@
 {
   "src/lib/components/DashFeatureViewer.react.js": {
-    "description": "ExampleComponent is an example component.\nIt takes a property, `label`, and\ndisplays it.\nIt renders an input with the property `value`\nwhich is editable by the user.",
+    "description": "Feature Viewer for Protein or DNA sequences\nFrom Calipho \nAdd Features as object\nSelected Feature or Sequence available in callback",
     "displayName": "DashFeatureViewer",
     "methods": [
       {

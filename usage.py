@@ -41,12 +41,20 @@ app.layout = html.Div([
                     value=[0],
                     multi=True,
                 ),
+    dcc.Dropdown(
+                    id='zoom',
+                    options = [
+                        {'label':'Z1','value': 'a'},
+                        {'label':'Z2','value': 'b'},
+                    ],
+                ),
     dash_feature_viewer.DashFeatureViewer(
         id='input',
         sequence="",
         features=[],
         viewerStyle={'width': '800px'},
-        options={}
+        options={},
+        zoom=[],
     ),
     html.Div(id='output'),
 ])
@@ -64,6 +72,17 @@ def feat(value):
     if value:
         feets = [features[v] for v in value]
         return feets
+    else:
+        return dash.no_update
+
+@app.callback(Output('input', 'zoom'), [Input('zoom', 'value')])
+def dfat(zz):
+    if zz:
+        if zz == 'a':
+            print(zz)
+            return [2,60]
+        else:
+            return [25,90]
     else:
         return dash.no_update
 

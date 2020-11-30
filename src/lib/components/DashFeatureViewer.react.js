@@ -30,8 +30,8 @@ export default class DashFeatureViewer extends Component {
         const style = { ... viewerStyle }
 
         return (
-            <div id={id} style={style}
-                 ref={(c) => { this.container = c; }}
+            <div id={ id } style={ style }
+                 ref={ (c) => { this.container = c; } }
                  />
         );
     }
@@ -56,6 +56,11 @@ export default class DashFeatureViewer extends Component {
                 this.createViewer();
             }
         
+        if (zoom !== prevProps.zoom) {
+            console.log(zoom);
+            this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+        }
+        
     }
 
     createViewer() {
@@ -71,8 +76,9 @@ export default class DashFeatureViewer extends Component {
             })
         }
         // set zoom to sequence length
-        setProps({zoom: [0, sequence.length] });
-
+        if (zoom === [0,0]) {
+            setProps({zoom: [0, sequence.length] });
+        }
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
             console.log(d.detail);
@@ -83,7 +89,7 @@ export default class DashFeatureViewer extends Component {
         this.viewer.onZoom(function (d) {
             console.log(d.detail);
             setProps({ zoom: [d.detail.start-1, d.detail.end] });
-        })
+        }) 
     }
 
     // mouse down with cntrl to start sequence select

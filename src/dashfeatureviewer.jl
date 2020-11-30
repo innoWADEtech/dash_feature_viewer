@@ -6,11 +6,10 @@ export dashfeatureviewer
     dashfeatureviewer(;kwargs...)
 
 A DashFeatureViewer component.
-ExampleComponent is an example component.
-It takes a property, `label`, and
-displays it.
-It renders an input with the property `value`
-which is editable by the user.
+Feature Viewer for Protein or DNA sequences
+From Calipho 
+Add Features as object
+Selected Feature or Sequence available in callback
 Keyword arguments:
 - `id` (String; optional): The ID used to identify this component in Dash callbacks.
 - `options` (Dict; optional): Options for Feature Viewer.

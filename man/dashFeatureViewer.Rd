@@ -6,7 +6,7 @@
 \title{DashFeatureViewer component}
 
 \description{
-ExampleComponent is an example component. It takes a property, `label`, and displays it. It renders an input with the property `value` which is editable by the user.
+Feature Viewer for Protein or DNA sequences From Calipho  Add Features as object Selected Feature or Sequence available in callback
 }
 
 \usage{

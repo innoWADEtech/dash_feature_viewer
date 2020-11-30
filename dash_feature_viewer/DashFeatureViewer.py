@@ -5,11 +5,10 @@ from dash.development.base_component import Component, _explicitize_args
 
 class DashFeatureViewer(Component):
     """A DashFeatureViewer component.
-ExampleComponent is an example component.
-It takes a property, `label`, and
-displays it.
-It renders an input with the property `value`
-which is editable by the user.
+Feature Viewer for Protein or DNA sequences
+From Calipho 
+Add Features as object
+Selected Feature or Sequence available in callback
 
 Keyword arguments:
 - id (string; optional): The ID used to identify this component in Dash callbacks.
