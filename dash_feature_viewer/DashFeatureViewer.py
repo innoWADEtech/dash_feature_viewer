@@ -23,7 +23,7 @@ Keyword arguments:
 - sequence (string; optional): The Sequence or integer length value.
 - features (list; optional): The Features to View.
 - viewerStyle (dict; default {'width': '800px'}): The Style of Viewer.
-- zoom (list; default [0,0]): The Zoom of Viewer.
+- zoom (list; optional): The Zoom of Viewer.
 - selectedSeq (list; optional): The selected sequence of Viewer."""
     @_explicitize_args
     def __init__(self, id=Component.UNDEFINED, options=Component.UNDEFINED, sequence=Component.UNDEFINED, features=Component.UNDEFINED, viewerStyle=Component.UNDEFINED, zoom=Component.UNDEFINED, selectedSeq=Component.UNDEFINED, **kwargs):

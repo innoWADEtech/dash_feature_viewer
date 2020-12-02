@@ -23,6 +23,8 @@ features = [
 ]
 longseq = "MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"
 app.layout = html.Div([
+     html.Div('Spacer'),
+    html.Div([
     dcc.Dropdown(
                     id='sequence',
                     options = [
@@ -53,11 +55,12 @@ app.layout = html.Div([
         sequence="",
         features=[],
         viewerStyle={'width': '800px'},
-        options={},
+        options={'toolbar': False},
         zoom=[],
     ),
     html.Div(id='output'),
-])
+    ]),
+], style={"display": "grid", "grid-template-columns": "50% 50%"})
 
 
 @app.callback(Output('input', 'sequence'), [Input('sequence', 'value')])

@@ -121,11 +121,7 @@
           "name": "array"
         },
         "required": false,
-        "description": "The Zoom of Viewer.",
-        "defaultValue": {
-          "value": "[0,0]",
-          "computed": false
-        }
+        "description": "The Zoom of Viewer."
       },
       "selectedSeq": {
         "type": {
