@@ -14,7 +14,7 @@ features = [
     'color': "#0F8292",
     'type': "rect",
     }, {
-    'data': [{'x': 5, 'y': 10}, {'x': 6, 'y': 13}, {'x': 11, 'y': 40}],
+    'data': [{'x': 5, 'y': 10, 'description': 'dude'}, {'x': 6, 'y': 13, 'description': 'man'}, {'x': 11, 'y': 40}],
     'name': "test feature 2",
     'className': "test1",
     'color': "#0F8222",
@@ -55,7 +55,7 @@ app.layout = html.Div([
         sequence="",
         features=[],
         viewerStyle={'width': '800px'},
-        options={'toolbar': False},
+        options={},
         zoom=[],
     ),
     html.Div(id='output'),

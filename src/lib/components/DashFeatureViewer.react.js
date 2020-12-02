@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FeatureViewer from 'feature-viewer';
+import 'feature-viewer/css/style.css'
+// import 'feature-viewer/examples/index.css'
 /**
  * Feature Viewer for Protein or DNA sequences
  * From Calipho 
@@ -86,15 +88,25 @@ export default class DashFeatureViewer extends Component {
                 this.viewer.addFeature(feature)
             })
         }
-        console.log(zoom, sequence)
+        console.log(zoom, sequence, options.zoomMax)
         if (zoom.length === 0 && sequence.length !== 0) {
             console.log('change me')
             console.log(sequence)
             console.log(this.props.sequence)
             // this.viewer.zoom(0, sequence.length)
             setProps({zoom: [0, sequence.length] });
+        
         } else if (sequence.length > 0) {
+            let zoomMax = 50;
+            if (options.zoomMax) {
+                zoomMax = options.zoomMax
+            }
+            if ((zoom[1]-zoom[0]) < zoomMax || (zoom[1]-zoom[0]) > sequence.length) {
+                console.log('reset')
+                setProps({zoom: [0, sequence.length] });
+            } else {
             this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+            }
         }
         
         // set zoom to sequence length
@@ -123,7 +135,7 @@ export default class DashFeatureViewer extends Component {
     cntrl(container, e) {if (e.ctrlKey === true) {
         e.stopPropagation();
         let selector = '';
-        console.log(container.clientHeight)
+        console.log(document.getElementsByClassName('background')[0].height.baseVal.value)
         // use selectedRect from feature
         if (document.getElementsByClassName('selectedRect')[0]) {
             selector = document.getElementsByClassName('selectedRect')[0];
@@ -137,16 +149,17 @@ export default class DashFeatureViewer extends Component {
             att.value = 'selectedRect'; 
             selector.setAttributeNode(att);
             // let totalHeight = container.clientHeight;
-            let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
+            let figureHeight = document.getElementsByClassName('background')[0].height.baseVal.value
+            // let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
             // let figureHeight = document.getElementsByClassName('background')[0].clientHeight;
-            // console.log(document.getElementsByTagName('svg'))
+            console.log(document.getElementsByTagName('svg'))
             //console.log(document.getElementsByClassName('background'))
             // selector.style.top = `${totalHeight-figureHeight+7}px`;
             selector.style.top = '60px';
             if (this.props.options.toolbar === false) {
                 selector.style.top = '10px';
             }
-            selector.style.height = `${figureHeight-10}px`;
+            selector.style.height = `${figureHeight}px`;
             selector.style.position = 'absolute';
             selector.style.zIndex = -1;
             selector.style.backgroundColor = "lightgrey";
