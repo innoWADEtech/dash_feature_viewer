@@ -32,7 +32,7 @@ app.layout = html.Div([
                         {'label': 'Seq2','value':'DASDASDASDAS'},
                         {'label': 'Seq3', 'value': longseq}
                     ],
-                    value='DASDASDASDAS',
+                    # value='DASDASDASDAS',
                 ),
     dcc.Dropdown(
                     id='feature',
@@ -40,7 +40,7 @@ app.layout = html.Div([
                         {'label':'Fet1','value': 0},
                         {'label':'Fet2','value': 1},
                     ],
-                    value=[0],
+                    # value=[0],
                     multi=True,
                 ),
     dcc.Dropdown(
@@ -52,7 +52,7 @@ app.layout = html.Div([
                 ),
     dash_feature_viewer.DashFeatureViewer(
         id='input',
-        sequence="",
+        sequence="ALKLAKSLASMSLAKMSLAKSMALKMALDALSMALKSMALKSM",
         features=[],
         viewerStyle={'width': '800px'},
         options={},
@@ -89,7 +89,7 @@ def dfat(zz):
     else:
         return dash.no_update
 
-@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('sequence', 'value'))
+@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('input', 'sequence'))
 def sel(select, seq):
     if select:
         seqsel = seq[select[0]:select[1]]

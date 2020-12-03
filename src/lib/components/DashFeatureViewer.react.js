@@ -40,7 +40,7 @@ export default class DashFeatureViewer extends Component {
     }
 
     componentDidMount() {
-        // this.createViewer();
+        this.createViewer();
         this.container.addEventListener('mousedown', this.cntrl.bind(null, this.container), true);
         this.container.addEventListener('mousemove', this.cntrl2, true);
         this.container.addEventListener('mouseup', this.cntrl3, true);
