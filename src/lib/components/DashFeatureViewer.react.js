@@ -197,6 +197,8 @@ export default class DashFeatureViewer extends Component {
             let endAA = Math.round((start + end - width) * ratio) + this.props.zoom[0];
             this.props.setProps({ selectedSeq: [startAA, endAA]});
         }  
+    } else { console.log(document.getElementsByClassName('selectedRect'));
+            this.props.setProps({ selectedSeq: [0,0] }); 
     } 
     }
 }

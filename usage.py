@@ -92,6 +92,7 @@ def dfat(zz):
 @app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('input', 'sequence'))
 def sel(select, seq):
     if select:
+        print(select)
         seqsel = seq[select[0]:select[1]]
         return f"{seqsel} {select}"
     else:
