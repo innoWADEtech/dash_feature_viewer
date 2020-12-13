@@ -51,7 +51,7 @@ app.layout = html.Div([
                     ],
                 ),
     dash_feature_viewer.DashFeatureViewer(
-        id='input',
+        id={'id': 'input'},
         sequence="ALKLAKSLASMSLAKMSLAKSMALKMALDALSMALKSMALKSM",
         features=[],
         viewerStyle={'width': '800px'},
@@ -63,14 +63,14 @@ app.layout = html.Div([
 ], style={"display": "grid", "grid-template-columns": "50% 50%"})
 
 
-@app.callback(Output('input', 'sequence'), [Input('sequence', 'value')])
+@app.callback(Output({'id': 'input'}, 'sequence'), [Input('sequence', 'value')])
 def display_output(value):
     if value:
         return value
     else:
         return dash.no_update
 
-@app.callback(Output('input', 'features'), [Input('feature', 'value')])
+@app.callback(Output({'id': 'input'}, 'features'), [Input('feature', 'value')])
 def feat(value):
     if value:
         feets = [features[v] for v in value]
@@ -78,7 +78,7 @@ def feat(value):
     else:
         return dash.no_update
 
-@app.callback(Output('input', 'zoom'), [Input('zoom', 'value')])
+@app.callback(Output({'id': 'input'}, 'zoom'), [Input('zoom', 'value')])
 def dfat(zz):
     if zz:
         if zz == 'a':
@@ -89,7 +89,7 @@ def dfat(zz):
     else:
         return dash.no_update
 
-@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('input', 'sequence'))
+@app.callback(Output('output', 'children'), Input({'id': 'input'}, 'selectedSeq'), State({'id': 'input'}, 'sequence'))
 def sel(select, seq):
     if select:
         print(select)
