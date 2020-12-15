@@ -31,7 +31,6 @@ export default class DashFeatureViewer extends Component {
     render() {
         const { id, setProps, viewerStyle, zoom, sequence } = this.props;
         const style = { ... viewerStyle }
-
         return (
             <div id={ id } style={ style }
                  ref={ (c) => { this.container = c; } }

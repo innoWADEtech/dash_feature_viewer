@@ -1,0 +1,109 @@
+{
+  "_from": "feature-viewer",
+  "_id": "feature-viewer@0.1.44",
+  "_inBundle": false,
+  "_integrity": "sha1-oESwxyCz8zT0AGmQ4aEfL9kkpcw=",
+  "_location": "/feature-viewer",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "feature-viewer",
+    "name": "feature-viewer",
+    "escapedName": "feature-viewer",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/feature-viewer/-/feature-viewer-0.1.44.tgz",
+  "_shasum": "a044b0c720b3f334f4006990e1a11f2fd924a5cc",
+  "_spec": "feature-viewer",
+  "_where": "/home/sensei/dash/dash_feature_viewer",
+  "authors": [
+    "Mathieu Schaeffer <mat.schaeff@gmail.com>",
+    "Calipho Team <ndu@isb-sib.ch>"
+  ],
+  "bugs": {
+    "url": "https://github.com/calipho-sib/feature-viewer/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "biojs-events": "x.x.x",
+    "bootstrap": "x.x.x",
+    "bower": "x.x.x",
+    "d3": "3.5.6",
+    "grunt-cli": "x.x.x",
+    "jquery": "x.x.x",
+    "nextprot": "x.x.x",
+    "popper.js": "^1.16.1"
+  },
+  "deprecated": false,
+  "description": "A lightweight, generic and easy-to-use feature-viewer written in javascript with D3",
+  "devDependencies": {
+    "browserify": "6.x",
+    "grunt": "x.x.x",
+    "grunt-bump": "^0.3.0",
+    "grunt-connect": "^0.2.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-serve": "^0.1.6",
+    "load-grunt-tasks": "^0.6.0",
+    "mkdirp": "^0.5.0",
+    "prunner": "1.x",
+    "sniper": "0.x",
+    "watchify": "^1.0.6"
+  },
+  "homepage": "https://github.com/calipho-sib/feature-viewer",
+  "keywords": [
+    "sib",
+    "isb",
+    "calipho",
+    "feature",
+    "protein",
+    "nextprot",
+    "uniprot",
+    "viewer",
+    "biojs"
+  ],
+  "licenses": [
+    {
+      "type": "GNU GPL v2"
+    }
+  ],
+  "main": "lib/index.js",
+  "name": "feature-viewer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calipho-sib/feature-viewer.git"
+  },
+  "scripts": {
+    "build": "mkdir -p build && browserify -r ./:feature-viewer -o build/viewer.js",
+    "build-all": "npm run build",
+    "build-browser": "npm run build",
+    "dist": "grunt && grunt concating && grunt serve",
+    "sniper": "sniper .",
+    "w": "prunner \"npm run sniper\" \"npm run watch\"",
+    "watch": "watchify -r ./:feature-viewer -v -o build/viewer.js"
+  },
+  "sniper": {
+    "js": [
+      "/build/viewer.js"
+    ],
+    "css": [
+      "/css/bootstrap.css",
+      "/css/style.css"
+    ],
+    "snippets": [
+      "snippets"
+    ],
+    "first": "example_1"
+  },
+  "version": "0.1.44"
+}
