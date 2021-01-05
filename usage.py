@@ -23,7 +23,8 @@ features = [
 ]
 longseq = "MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"
 app.layout = html.Div([
-     html.Div('Spacer'),
+    html.Div('Spacer'),
+    html.Button(id='dark',children='dark'),
     html.Div([
     dcc.Dropdown(
                     id='sequence',
@@ -54,14 +55,30 @@ app.layout = html.Div([
         id={'id': 'input'},
         sequence="ALKLAKSLASMSLAKMSLAKSMALKMALDALSMALKSMALKSM",
         features=[],
-        viewerStyle={'width': '800px'},
+        viewerStyle={},
+        darkMode=False,
         options={},
         zoom=[],
     ),
     html.Div(id='output'),
     ]),
-], style={"display": "grid", "grid-template-columns": "50% 50%"})
+# ], id="div", style={"display": "grid", "grid-template-columns": "50% 50%"})
+], id="div",style={'backgroundColor': 'white'})
 
+
+@app.callback(Output('div','style'),
+              Output({'id': 'input'}, 'darkMode'),
+              Input('dark', 'n_clicks'),
+              State('div', 'style'),
+              State({'id': 'input'}, 'darkMode'))
+def toggle(dark, style, feat):
+    if dark:
+        if style == {'backgroundColor': 'white'}:
+            style = {'backgroundColor': 'black'}
+        else:
+            style = {'backgroundColor': 'white'}
+        feat = not feat
+    return style, feat
 
 @app.callback(Output({'id': 'input'}, 'sequence'), [Input('sequence', 'value')])
 def display_output(value):

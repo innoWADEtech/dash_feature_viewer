@@ -21,13 +21,13 @@ export default class DashFeatureViewer extends Component {
     }
     constructor(props) {
         super(props); 
-
+        // bind mouse override functions
         this.cntrl = this.cntrl.bind(this);
         this.cntrl2 = this.cntrl2.bind(this);
         this.cntrl3 = this.cntrl3.bind(this);
         this.createViewer = this.createViewer.bind(this);
     }
-
+    // main render
     render() {
         const { id, setProps, viewerStyle, zoom, sequence } = this.props;
         const style = { ... viewerStyle }
@@ -49,7 +49,7 @@ export default class DashFeatureViewer extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {options, sequence, features, zoom } = this.props;
+        const {options, sequence, features, zoom, darkMode} = this.props;
         // Have to replace everything on update since no update methods in library
         if (options !== prevProps.options ||
             sequence !== prevProps.sequence ||
@@ -66,15 +66,38 @@ export default class DashFeatureViewer extends Component {
                 //     this.viewer.zoom(zoom[0]+2,zoom[1]-1)
                 // }
             }
-        
+        // change zoom
         if (zoom !== prevProps.zoom) {
             console.log(prevProps.zoom);
-            console.log(zoom);
+            // console.log(zoom);
             this.viewer.zoom(zoom[0]+2,zoom[1]-1)
         }
+
+        // darkmode check
+        const seq = document.getElementsByClassName('AA');
+        const tick = document.getElementsByClassName('tick');
+        // console.log(seq);
+        if (darkMode == true) {
+            for (let item of seq) {
+                item.style.fill = 'white';
+            }
+            for (let item of tick) {
+                item.style.fill = 'white';
+            }
+            document.getElementById('zoomPosition').style.color = 'white';
+        } else {
+            for (let item of seq) {
+                item.style.fill = 'black';
+            }
+            for (let item of tick) {
+                item.style.fill = 'black';
+            }
+            document.getElementById('zoomPosition').style.color = 'black';
+        }
+        
         
     }
-
+    // main viewer creation
     createViewer() {
         const { id, options, sequence, features, setProps, featureSelected, zoom } = this.props;
         // unpack all options
@@ -89,9 +112,9 @@ export default class DashFeatureViewer extends Component {
         }
         console.log(zoom, sequence, options.zoomMax)
         if (zoom.length === 0 && sequence.length !== 0) {
-            console.log('change me')
-            console.log(sequence)
-            console.log(this.props.sequence)
+            // console.log('change me')
+            // console.log(sequence)
+            // console.log(this.props.sequence)
             // this.viewer.zoom(0, sequence.length)
             setProps({zoom: [0, sequence.length] });
         
@@ -101,7 +124,7 @@ export default class DashFeatureViewer extends Component {
                 zoomMax = options.zoomMax
             }
             if ((zoom[1]-zoom[0]) < zoomMax || (zoom[1]-zoom[0]) > sequence.length) {
-                console.log('reset')
+                // console.log('reset')
                 setProps({zoom: [0, sequence.length] });
             } else {
             this.viewer.zoom(zoom[0]+2,zoom[1]-1)
@@ -118,13 +141,13 @@ export default class DashFeatureViewer extends Component {
         // }
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
-            console.log(d.detail);
+            // console.log(d.detail);
             setProps({ selectedSeq: [d.detail.start-1, d.detail.end] });
         });
 
         // update props with zoom
         this.viewer.onZoom(function (d) {
-            console.log(d.detail);
+            // console.log(d.detail);
             setProps({ zoom: [d.detail.start-1, d.detail.end] });
         }) 
         // console.log(zoom);
@@ -134,7 +157,7 @@ export default class DashFeatureViewer extends Component {
     cntrl(container, e) {if (e.ctrlKey === true) {
         e.stopPropagation();
         let selector = '';
-        console.log(document.getElementsByClassName('background')[0].height.baseVal.value)
+        // console.log(document.getElementsByClassName('background')[0].height.baseVal.value)
         // use selectedRect from feature
         if (document.getElementsByClassName('selectedRect')[0]) {
             selector = document.getElementsByClassName('selectedRect')[0];
@@ -151,7 +174,7 @@ export default class DashFeatureViewer extends Component {
             let figureHeight = document.getElementsByClassName('background')[0].height.baseVal.value
             // let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
             // let figureHeight = document.getElementsByClassName('background')[0].clientHeight;
-            console.log(document.getElementsByTagName('svg'))
+            // console.log(document.getElementsByTagName('svg'))
             //console.log(document.getElementsByClassName('background'))
             // selector.style.top = `${totalHeight-figureHeight+7}px`;
             selector.style.top = '60px';
@@ -181,7 +204,7 @@ export default class DashFeatureViewer extends Component {
 
     // mouseup with cntrl to end select and update props
     cntrl3 (e) {if (e.ctrlKey == true) {
-        console.log(this.props.zoom)
+        // console.log(this.props.zoom)
         e.stopPropagation();
         if (document.getElementsByClassName('selectedRect')) {
             let selector = document.getElementsByClassName('selectedRect')[0];
@@ -190,8 +213,8 @@ export default class DashFeatureViewer extends Component {
             let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
             let start = parseFloat(selector.style.left.slice(0,-2));
             let end = parseFloat(selector.style.width.slice(0,-2));
-            console.log(e)
-            console.log(start,end,figureWidth)
+            // console.log(e)
+            // console.log(start,end,figureWidth)
             let startAA = Math.round((start - width) * ratio) + this.props.zoom[0];
             let endAA = Math.round((start + end - width) * ratio) + this.props.zoom[0];
             this.props.setProps({ selectedSeq: [startAA, endAA]});
@@ -257,4 +280,9 @@ DashFeatureViewer.propTypes = {
      * The selected sequence of Viewer.
      */
     selectedSeq: PropTypes.array,
+
+    /**
+     * The selected sequence of Viewer.
+     */
+    darkMode: PropTypes.bool,
 };

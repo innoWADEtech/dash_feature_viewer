@@ -11,7 +11,7 @@ Feature Viewer for Protein or DNA sequences From Calipho  Add Features as object
 
 \usage{
 dashFeatureViewer(id=NULL, options=NULL, sequence=NULL, features=NULL,
-viewerStyle=NULL, zoom=NULL, selectedSeq=NULL)
+viewerStyle=NULL, zoom=NULL, selectedSeq=NULL, darkMode=NULL)
 }
 
 \arguments{
@@ -28,6 +28,8 @@ viewerStyle=NULL, zoom=NULL, selectedSeq=NULL)
 \item{zoom}{Unnamed list. The Zoom of Viewer.}
 
 \item{selectedSeq}{Unnamed list. The selected sequence of Viewer.}
+
+\item{darkMode}{Logical. The selected sequence of Viewer.}
 }
 
 \value{named list of JSON elements corresponding to React.js properties and their values}

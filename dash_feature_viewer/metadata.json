@@ -129,6 +129,13 @@
         },
         "required": false,
         "description": "The selected sequence of Viewer."
+      },
+      "darkMode": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "The selected sequence of Viewer."
       }
     }
   }
