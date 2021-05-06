@@ -26,6 +26,7 @@ export default class DashFeatureViewer extends Component {
         this.cntrl2 = this.cntrl2.bind(this);
         this.cntrl3 = this.cntrl3.bind(this);
         this.createViewer = this.createViewer.bind(this);
+        DashFeatureViewer.selectedID = '';
     }
     // main render
     render() {
@@ -49,7 +50,7 @@ export default class DashFeatureViewer extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {options, sequence, features, zoom, darkMode} = this.props;
+        const {options, sequence, features, zoom, selectedSeq} = this.props;
         // Have to replace everything on update since no update methods in library
         if (options !== prevProps.options ||
             sequence !== prevProps.sequence ||
@@ -59,6 +60,11 @@ export default class DashFeatureViewer extends Component {
                 this.container = DashFeatureViewer.clearViewer(this.container)
                 this.viewer = null;
                 this.createViewer();
+                console.log('selectedSeq',selectedSeq)
+                console.log(DashFeatureViewer.selectedID)
+                // if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
+                //     this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
+                // }
                 // if (zoom === []) {
                 //     this.viewer.zoom(0, sequence.length)
                 //     // setProps({zoom: [0, sequence.length] });
@@ -66,40 +72,46 @@ export default class DashFeatureViewer extends Component {
                 //     this.viewer.zoom(zoom[0]+2,zoom[1]-1)
                 // }
             }
+        // console.log(this.viewer.sequence)
         // change zoom
         if (zoom !== prevProps.zoom) {
             console.log(prevProps.zoom);
             // console.log(zoom);
             this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+            if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
+                this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
+            }
         }
-
+        // if(selectedSeq !== prevProps.selectedSeq) {
+        //     this.selectedID = selectedSeq.id
+        // }
         // darkmode check
         const seq = document.getElementsByClassName('AA');
         const tick = document.getElementsByClassName('tick');
         // console.log(seq);
-        if (darkMode == true) {
-            for (let item of seq) {
-                item.style.fill = 'white';
-            }
-            for (let item of tick) {
-                item.style.fill = 'white';
-            }
-            document.getElementById('zoomPosition').style.color = 'white';
-        } else {
-            for (let item of seq) {
-                item.style.fill = 'black';
-            }
-            for (let item of tick) {
-                item.style.fill = 'black';
-            }
-            document.getElementById('zoomPosition').style.color = 'black';
-        }
+        // if (darkMode == true) {
+        //     for (let item of seq) {
+        //         item.style.fill = 'white';
+        //     }
+        //     for (let item of tick) {
+        //         item.style.fill = 'white';
+        //     }
+        //     document.getElementById('zoomPosition').style.color = 'white';
+        // } else {
+        //     for (let item of seq) {
+        //         item.style.fill = 'black';
+        //     }
+        //     for (let item of tick) {
+        //         item.style.fill = 'black';
+        //     }
+        //     document.getElementById('zoomPosition').style.color = 'black';
+        // }
         
         
     }
     // main viewer creation
     createViewer() {
-        const { id, options, sequence, features, setProps, featureSelected, zoom } = this.props;
+        const { id, options, sequence, features, setProps, selectedSeq, zoom } = this.props;
         // unpack all options
         const fullOptions = { ... defaultOptions, ... options }
         // 
@@ -130,6 +142,17 @@ export default class DashFeatureViewer extends Component {
             this.viewer.zoom(zoom[0]+2,zoom[1]-1)
             }
         }
+
+        console.log(DashFeatureViewer.selectedID)
+        if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
+                this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
+        }
+        // console.log(this.selectedID);
+        // console.log('selectedSeq',selectedSeq)
+        // console.log(DashFeatureViewer.selectedID)
+        // if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
+        //     this.viewer.addRectSelection(DashFeatureViewer.selectedID)
+        // }
         
         // set zoom to sequence length
         // console.log(zoom);
@@ -141,7 +164,10 @@ export default class DashFeatureViewer extends Component {
         // }
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
-            // console.log(d.detail);
+            console.log(d);
+            console.log(d.detail);
+            let did = d.detail.id
+            DashFeatureViewer.selectedID = did;
             setProps({ selectedSeq: [d.detail.start-1, d.detail.end] });
         });
 
@@ -221,6 +247,7 @@ export default class DashFeatureViewer extends Component {
         }  
     } else { console.log(document.getElementsByClassName('selectedRect'));
             this.props.setProps({ selectedSeq: [0,0] }); 
+            DashFeatureViewer.selectedID = '';
     } 
     }
 }
@@ -231,12 +258,13 @@ const defaultOptions = {
     brushActive: true, //zoom
     toolbar: true, //current zoom & mouse position
     bubbleHelp: true, 
-    zoomMax: 50 
+    zoomMax: 50 ,
 };
 
 DashFeatureViewer.defaultProps = {
     options: defaultOptions,
     viewerStyle: {'width': '800px'},
+    selectedSeq: [0,0],
 };
 
 DashFeatureViewer.propTypes = {
@@ -284,5 +312,5 @@ DashFeatureViewer.propTypes = {
     /**
      * The selected sequence of Viewer.
      */
-    darkMode: PropTypes.bool,
+    // darkMode: PropTypes.bool,
 };

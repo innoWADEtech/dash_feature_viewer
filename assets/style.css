@@ -125,3 +125,11 @@ rect{
 .panel-body h5 {
     font-size: .75em;
 }
+
+/* #tabu text {
+    fill: white;
+} */
+
+text[style] {
+    fill: white !important;
+}

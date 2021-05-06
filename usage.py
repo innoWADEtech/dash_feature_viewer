@@ -14,9 +14,9 @@ features = [
     'color': "#0F8292",
     'type': "rect",
     }, {
-    'data': [{'x': 5, 'y': 10, 'description': 'dude'}, {'x': 6, 'y': 13, 'description': 'man'}, {'x': 11, 'y': 40}],
+    'data': [{'id': 'dude','x': 5, 'y': 10, 'description': 'dude'}, {'id':'man','x': 6, 'y': 13, 'description': 'man'}, {'id':'no','x': 11, 'y': 40}],
     'name': "test feature 2",
-    'className': "test1",
+    'className': "test2",
     'color': "#0F8222",
     'type': "rect",
     }
@@ -52,42 +52,42 @@ app.layout = html.Div([
                     ],
                 ),
     dash_feature_viewer.DashFeatureViewer(
-        id={'id': 'input'},
+        id='input',
         sequence="ALKLAKSLASMSLAKMSLAKSMALKMALDALSMALKSMALKSM",
         features=[],
         viewerStyle={},
-        darkMode=False,
+        # darkMode=False,
         options={},
         zoom=[],
     ),
     html.Div(id='output'),
-    ]),
+    ],id='tabu'),
 # ], id="div", style={"display": "grid", "grid-template-columns": "50% 50%"})
 ], id="div",style={'backgroundColor': 'white'})
 
 
 @app.callback(Output('div','style'),
-              Output({'id': 'input'}, 'darkMode'),
+            #   Output('input', 'darkMode'),
               Input('dark', 'n_clicks'),
-              State('div', 'style'),
-              State({'id': 'input'}, 'darkMode'))
-def toggle(dark, style, feat):
+              State('div', 'style'))
+            #   State('input', 'darkMode'))
+def toggle(dark, style):
     if dark:
         if style == {'backgroundColor': 'white'}:
             style = {'backgroundColor': 'black'}
         else:
             style = {'backgroundColor': 'white'}
-        feat = not feat
-    return style, feat
+        # feat = not feat
+    return style
 
-@app.callback(Output({'id': 'input'}, 'sequence'), [Input('sequence', 'value')])
+@app.callback(Output('input', 'sequence'), [Input('sequence', 'value')])
 def display_output(value):
     if value:
         return value
     else:
         return dash.no_update
 
-@app.callback(Output({'id': 'input'}, 'features'), [Input('feature', 'value')])
+@app.callback(Output('input', 'features'), [Input('feature', 'value')])
 def feat(value):
     if value:
         feets = [features[v] for v in value]
@@ -95,7 +95,7 @@ def feat(value):
     else:
         return dash.no_update
 
-@app.callback(Output({'id': 'input'}, 'zoom'), [Input('zoom', 'value')])
+@app.callback(Output('input', 'zoom'), [Input('zoom', 'value')])
 def dfat(zz):
     if zz:
         if zz == 'a':
@@ -106,10 +106,11 @@ def dfat(zz):
     else:
         return dash.no_update
 
-@app.callback(Output('output', 'children'), Input({'id': 'input'}, 'selectedSeq'), State({'id': 'input'}, 'sequence'))
+@app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('input', 'sequence'))
 def sel(select, seq):
     if select:
         print(select)
+
         seqsel = seq[select[0]:select[1]]
         return f"{seqsel} {select}"
     else:

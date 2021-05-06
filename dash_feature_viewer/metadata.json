@@ -80,7 +80,7 @@
         "required": false,
         "description": "Options for Feature Viewer.",
         "defaultValue": {
-          "value": "{\n    showAxis: true,\n    showSequence: true,\n    brushActive: true, //zoom\n    toolbar: true, //current zoom & mouse position\n    bubbleHelp: true, \n    zoomMax: 50 \n}",
+          "value": "{\n    showAxis: true,\n    showSequence: true,\n    brushActive: true, //zoom\n    toolbar: true, //current zoom & mouse position\n    bubbleHelp: true, \n    zoomMax: 50 ,\n}",
           "computed": false
         }
       },
@@ -128,14 +128,11 @@
           "name": "array"
         },
         "required": false,
-        "description": "The selected sequence of Viewer."
-      },
-      "darkMode": {
-        "type": {
-          "name": "bool"
-        },
-        "required": false,
-        "description": "The selected sequence of Viewer."
+        "description": "The selected sequence of Viewer.",
+        "defaultValue": {
+          "value": "[0,0]",
+          "computed": false
+        }
       }
     }
   }
