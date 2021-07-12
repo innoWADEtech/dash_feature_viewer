@@ -1,7 +1,7 @@
 
 name = "DashFeatureViewer"
 uuid = "1b08a953-4be3-4667-9a23-c04610569036"
-authors = ["InnoWadeTech <developer@innowade.tech>"]
+authors = ["innoWADEtech <innowadetech@gmail.com>"]
 version = "0.0.1"
 
 [deps]

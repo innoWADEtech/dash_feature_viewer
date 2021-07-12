@@ -1,6 +1,6 @@
 # Dash Feature Viewer
 
-Dash Feature Viewer is a Dash component library.
+Dash Feature Viewer is a Dash component library. React wrapper around Calipho feature viewer
 
 Get started with:
 1. Install Dash and its dependencies: https://dash.plotly.com/installation

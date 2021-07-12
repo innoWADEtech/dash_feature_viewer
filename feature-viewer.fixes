@@ -1,9 +1,0 @@
-fixes for feature-viewer after npm install
-
-dash_feature_viewer/node_modules/feature-viewer/lib/index.js
-require("bootstrap/js/dist/tooltip.js");
-require("bootstrap/js/dist/popover.js");
-
-dash_feature_viewer/node_modules/feature-viewer
-npm install popper.js
-

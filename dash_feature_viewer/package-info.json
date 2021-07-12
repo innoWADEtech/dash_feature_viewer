@@ -13,11 +13,11 @@
     "build": "npm run build:js && npm run build:py_and_r",
     "build:activated": "npm run build:js && npm run build:py_and_r-activated"
   },
-  "author": "InnoWadeTech <developer@innowade.tech>",
+  "author": "innoWADEtech <innowadetech@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.5.3",
-    "feature-viewer": "^0.1.44",
+    "feature-viewer": "git://github.com/innoWADEtech/feature-viewer.git",
     "ramda": "^0.26.1"
   },
   "devDependencies": {

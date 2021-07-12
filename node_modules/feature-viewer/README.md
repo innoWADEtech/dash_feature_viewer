@@ -1,3 +1,7 @@
+# Update
+
+Old version of feature viewer used for dash plotly component. Maybe update to later version at some point. Updated to allow id to include CSS escaped characters
+
 # neXtProt - The knowledge resource on human proteins
 
 This is a code repository for the SIB - Swiss Institute of Bioinformatics CALIPHO group neXtProt project

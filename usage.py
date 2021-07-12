@@ -21,64 +21,44 @@ features = [
     'type': "rect",
     }
 ]
-longseq = "MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"
+
+seq = "MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWERMASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"
+
 app.layout = html.Div([
-    html.Div('Spacer'),
-    html.Button(id='dark',children='dark'),
-    html.Div([
     dcc.Dropdown(
-                    id='sequence',
-                    options = [
-                        {'label': 'Seq1','value':"MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"},
-                        {'label': 'Seq2','value':'DASDASDASDAS'},
-                        {'label': 'Seq3', 'value': longseq}
-                    ],
-                    # value='DASDASDASDAS',
-                ),
+        id='sequence',
+        options = [
+            {'label': 'Seq1','value':"MASASDFASLAKSMDLKMQWEWRAITIWERTWEIQIWERIQWEIRIWERTWETWERITQIIQWER"},
+            {'label': 'Seq2','value':'DASDASDASDAS'},
+            {'label': 'Seq3', 'value': seq}
+        ],
+    ),
     dcc.Dropdown(
-                    id='feature',
-                    options = [
-                        {'label':'Fet1','value': 0},
-                        {'label':'Fet2','value': 1},
-                    ],
-                    # value=[0],
-                    multi=True,
-                ),
+        id='feature',
+        options = [
+            {'label':'Fet1','value': 0},
+            {'label':'Fet2','value': 1},
+        ],
+        multi=True,
+    ),
     dcc.Dropdown(
-                    id='zoom',
-                    options = [
-                        {'label':'Z1','value': 'a'},
-                        {'label':'Z2','value': 'b'},
-                    ],
-                ),
+        id='zoom',
+        options = [
+            {'label':'Z1','value': 'a'},
+            {'label':'Z2','value': 'b'},
+        ],
+    ),
     dash_feature_viewer.DashFeatureViewer(
         id='input',
         sequence="ALKLAKSLASMSLAKMSLAKSMALKMALDALSMALKSMALKSM",
         features=[],
         viewerStyle={},
-        # darkMode=False,
         options={},
         zoom=[],
     ),
     html.Div(id='output'),
-    ],id='tabu'),
-# ], id="div", style={"display": "grid", "grid-template-columns": "50% 50%"})
-], id="div",style={'backgroundColor': 'white'})
+])
 
-
-@app.callback(Output('div','style'),
-            #   Output('input', 'darkMode'),
-              Input('dark', 'n_clicks'),
-              State('div', 'style'))
-            #   State('input', 'darkMode'))
-def toggle(dark, style):
-    if dark:
-        if style == {'backgroundColor': 'white'}:
-            style = {'backgroundColor': 'black'}
-        else:
-            style = {'backgroundColor': 'white'}
-        # feat = not feat
-    return style
 
 @app.callback(Output('input', 'sequence'), [Input('sequence', 'value')])
 def display_output(value):
@@ -99,7 +79,6 @@ def feat(value):
 def dfat(zz):
     if zz:
         if zz == 'a':
-            print(zz)
             return [2,60]
         else:
             return [25,90]
@@ -109,8 +88,6 @@ def dfat(zz):
 @app.callback(Output('output', 'children'), Input('input', 'selectedSeq'), State('input', 'sequence'))
 def sel(select, seq):
     if select:
-        print(select)
-
         seqsel = seq[select[0]:select[1]]
         return f"{seqsel} {select}"
     else:

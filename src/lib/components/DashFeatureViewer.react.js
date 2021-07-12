@@ -27,6 +27,7 @@ export default class DashFeatureViewer extends Component {
         this.cntrl3 = this.cntrl3.bind(this);
         this.createViewer = this.createViewer.bind(this);
         DashFeatureViewer.selectedID = '';
+        this.zoom = [1,50];
     }
     // main render
     render() {
@@ -39,14 +40,12 @@ export default class DashFeatureViewer extends Component {
         );
     }
 
+    // mount component
     componentDidMount() {
         this.createViewer();
         this.container.addEventListener('mousedown', this.cntrl.bind(null, this.container), true);
         this.container.addEventListener('mousemove', this.cntrl2, true);
         this.container.addEventListener('mouseup', this.cntrl3, true);
-        
-        // console.log(zoom)
-
     }
 
     componentDidUpdate(prevProps) {
@@ -62,74 +61,36 @@ export default class DashFeatureViewer extends Component {
                 this.createViewer();
                 console.log('selectedSeq',selectedSeq)
                 console.log(DashFeatureViewer.selectedID)
-                // if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
-                //     this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
-                // }
-                // if (zoom === []) {
-                //     this.viewer.zoom(0, sequence.length)
-                //     // setProps({zoom: [0, sequence.length] });
-                // } else {
-                //     this.viewer.zoom(zoom[0]+2,zoom[1]-1)
-                // }
-            }
-        // console.log(this.viewer.sequence)
+    
         // change zoom
-        if (zoom !== prevProps.zoom) {
-            console.log(prevProps.zoom);
+        if (zoom != prevProps.zoom && prevProps.zoom.length != 0) {
+            console.log('zoom props change',zoom, prevProps.zoom, this.zoom);
+            this.zoom = [...zoom];
             // console.log(zoom);
-            this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+            this.viewer.zoom(zoom[0],zoom[1])
             if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
                 this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
             }
         }
-        // if(selectedSeq !== prevProps.selectedSeq) {
-        //     this.selectedID = selectedSeq.id
-        // }
-        // darkmode check
-        const seq = document.getElementsByClassName('AA');
-        const tick = document.getElementsByClassName('tick');
-        // console.log(seq);
-        // if (darkMode == true) {
-        //     for (let item of seq) {
-        //         item.style.fill = 'white';
-        //     }
-        //     for (let item of tick) {
-        //         item.style.fill = 'white';
-        //     }
-        //     document.getElementById('zoomPosition').style.color = 'white';
-        // } else {
-        //     for (let item of seq) {
-        //         item.style.fill = 'black';
-        //     }
-        //     for (let item of tick) {
-        //         item.style.fill = 'black';
-        //     }
-        //     document.getElementById('zoomPosition').style.color = 'black';
-        // }
-        
         
     }
     // main viewer creation
     createViewer() {
         const { id, options, sequence, features, setProps, selectedSeq, zoom } = this.props;
         // unpack all options
-        const fullOptions = { ... defaultOptions, ... options }
-        // 
+        const fullOptions = { ... defaultOptions, ... options };
+        // create viewer
         this.viewer = new FeatureViewer(sequence, `#${id}`, fullOptions);
-        // this.viewer = viewer
         if (features !== null) {
             features.forEach(feature => {
                 this.viewer.addFeature(feature)
             })
         }
-        console.log(zoom, sequence, options.zoomMax)
-        if (zoom.length === 0 && sequence.length !== 0) {
-            // console.log('change me')
-            // console.log(sequence)
-            // console.log(this.props.sequence)
-            // this.viewer.zoom(0, sequence.length)
-            setProps({zoom: [0, sequence.length] });
         
+        // set zoom to sequence length or props.zoom
+        if (zoom.length === 0 && sequence.length !== 0) {
+            this.zoom = [1,sequence.length]
+            setProps({zoom: [1, sequence.length] });
         } else if (sequence.length > 0) {
             let zoomMax = 50;
             if (options.zoomMax) {
@@ -137,31 +98,19 @@ export default class DashFeatureViewer extends Component {
             }
             if ((zoom[1]-zoom[0]) < zoomMax || (zoom[1]-zoom[0]) > sequence.length) {
                 // console.log('reset')
-                setProps({zoom: [0, sequence.length] });
+                this.zoom = [1,sequence.length]
+                setProps({zoom: [1, sequence.length] });
             } else {
-            this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+            // this.viewer.zoom(zoom[0]+2,zoom[1]-1)
+            this.viewer.zoom(zoom[0],zoom[1])
             }
         }
 
-        console.log(DashFeatureViewer.selectedID)
+        // Add rect selection if id
         if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
                 this.viewer.addRectSelection(`#f${DashFeatureViewer.selectedID}`)
         }
-        // console.log(this.selectedID);
-        // console.log('selectedSeq',selectedSeq)
-        // console.log(DashFeatureViewer.selectedID)
-        // if (DashFeatureViewer.selectedID !=null && DashFeatureViewer.selectedID !='') {
-        //     this.viewer.addRectSelection(DashFeatureViewer.selectedID)
-        // }
         
-        // set zoom to sequence length
-        // console.log(zoom);
-        // if (!zoom) {
-        //     this.viewer.zoom(0, sequence.length)
-        //     // setProps({zoom: [0, sequence.length] });
-        // } else {
-        //     this.viewer.zoom(zoom[0]+2,zoom[1]-1)
-        // }
         // update props with feature boundaries
         this.viewer.onFeatureSelected(function (d) {
             console.log(d);
@@ -173,17 +122,16 @@ export default class DashFeatureViewer extends Component {
 
         // update props with zoom
         this.viewer.onZoom(function (d) {
-            // console.log(d.detail);
-            setProps({ zoom: [d.detail.start-1, d.detail.end] });
+            console.log('onZoom', d.detail);
+            this.zoom = [d.detail.start+1, d.detail.end-1];
+            setProps({ zoom: [d.detail.start+1, d.detail.end-1] });
         }) 
-        // console.log(zoom);
     }
 
     // mouse down with cntrl to start sequence select
     cntrl(container, e) {if (e.ctrlKey === true) {
         e.stopPropagation();
         let selector = '';
-        // console.log(document.getElementsByClassName('background')[0].height.baseVal.value)
         // use selectedRect from feature
         if (document.getElementsByClassName('selectedRect')[0]) {
             selector = document.getElementsByClassName('selectedRect')[0];
@@ -196,13 +144,7 @@ export default class DashFeatureViewer extends Component {
             let att = document.createAttribute("class");
             att.value = 'selectedRect'; 
             selector.setAttributeNode(att);
-            // let totalHeight = container.clientHeight;
             let figureHeight = document.getElementsByClassName('background')[0].height.baseVal.value
-            // let figureHeight = document.getElementsByTagName('svg')[1].clientHeight;
-            // let figureHeight = document.getElementsByClassName('background')[0].clientHeight;
-            // console.log(document.getElementsByTagName('svg'))
-            //console.log(document.getElementsByClassName('background'))
-            // selector.style.top = `${totalHeight-figureHeight+7}px`;
             selector.style.top = '60px';
             if (this.props.options.toolbar === false) {
                 selector.style.top = '10px';
@@ -230,20 +172,17 @@ export default class DashFeatureViewer extends Component {
 
     // mouseup with cntrl to end select and update props
     cntrl3 (e) {if (e.ctrlKey == true) {
-        // console.log(this.props.zoom)
         e.stopPropagation();
         if (document.getElementsByClassName('selectedRect')) {
             let selector = document.getElementsByClassName('selectedRect')[0];
             let figureWidth = document.getElementsByClassName('background')[0].width.baseVal.value;
             let width = 115;
-            let ratio = (this.props.zoom[1]-this.props.zoom[0])/figureWidth;
+            let ratio = ((this.props.zoom[1])-this.props.zoom[0])/figureWidth;
             let start = parseFloat(selector.style.left.slice(0,-2));
             let end = parseFloat(selector.style.width.slice(0,-2));
-            // console.log(e)
-            // console.log(start,end,figureWidth)
-            let startAA = Math.round((start - width) * ratio) + this.props.zoom[0];
-            let endAA = Math.round((start + end - width) * ratio) + this.props.zoom[0];
-            this.props.setProps({ selectedSeq: [startAA, endAA]});
+            let startAA = Math.round((start - width) * ratio + this.props.zoom[0]);
+            let endAA = Math.round((start + end - width) * ratio + this.props.zoom[0]);
+            this.props.setProps({ selectedSeq: [startAA-1, endAA]});
         }  
     } else { console.log(document.getElementsByClassName('selectedRect'));
             this.props.setProps({ selectedSeq: [0,0] }); 
