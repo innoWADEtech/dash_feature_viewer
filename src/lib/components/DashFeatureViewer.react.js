@@ -61,7 +61,7 @@ export default class DashFeatureViewer extends Component {
                 this.createViewer();
                 console.log('selectedSeq',selectedSeq)
                 console.log(DashFeatureViewer.selectedID)
-    
+            }
         // change zoom
         if (zoom != prevProps.zoom && prevProps.zoom.length != 0) {
             console.log('zoom props change',zoom, prevProps.zoom, this.zoom);
